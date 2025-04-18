@@ -1,2 +1,2 @@
 # FinanceFlux
-Capturing the constant flow of financial data and insights.
+Financial data visualization tool designed to help users analyze historical market trends, key financial metrics, and exploratory data insights. It provides heatmaps, tables, and statistical summaries for selected stocks, making it easy to identify patterns and correlations. By offering clear data representations, FinanceFlux enables investors and analysts to make informed decisions quickly.
