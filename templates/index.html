@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FinanceFlux Heatmap Viewer</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+    <div class="wrapper">
+        <h1>FinanceFlux Data Viewer</h1>
+        
+        <!-- Ticker Selection Form -->
+        <form action="/" method="get">
+            <fieldset>
+                <legend>Select Ticker</legend>
+
+                <label for="ticker">Select Ticker:</label>
+                <select name="ticker" id="ticker">
+                    <option value="AMZN" {% if selected_ticker == "AMZN" %}selected{% endif %}>Amazon</option>
+                    <option value="AAPL" {% if selected_ticker == "AAPL" %}selected{% endif %}>Apple</option>
+                    <option value="TSLA" {% if selected_ticker == "TSLA" %}selected{% endif %}>Tesla</option>
+                    <option value="MSFT" {% if selected_ticker == "MSFT" %}selected{% endif %}>Microsoft</option>
+                    <option value="GOOG" {% if selected_ticker == "GOOG" %}selected{% endif %}>Google</option>
+                    <option value="META" {% if selected_ticker == "META" %}selected{% endif %}>Meta</option>
+                </select>
+                
+                <button type="submit">Apply Filter</button>
+            </fieldset>
+        </form>
+        
+        <!-- Display Section -->
+        {% if data %}
+
+            <div class="key-metrics-section">
+                <h2>Key Metrics for {{ selected_ticker }}</h2>
+                {% if "Key Metrics" in data[selected_ticker] and data[selected_ticker]["Key Metrics"] %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Metric</th>
+                                <th>Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for key, value in data[selected_ticker]["Key Metrics"].items() %}
+                                <tr>
+                                    <td>{{ key }}</td>
+                                    <td>{{ value }}</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No key metrics available for {{ selected_ticker }}.</p>
+                {% endif %}
+            </div>
+            <!-- Heatmap Section -->
+            <div class="heatmap-section">
+                <h2>Heatmap for {{ selected_ticker }}</h2>
+                {% if data[selected_ticker]["Heatmap"] %}
+                    <div class="heatmap-container">
+                        <img src="{{ url_for('static', filename=data[selected_ticker]['Heatmap']) }}" alt="Heatmap for {{ selected_ticker }}">
+                    </div>
+                {% else %}
+                    <p>No heatmap available for {{ selected_ticker }}.</p>
+                {% endif %}
+            </div>
+            
+            <!-- Historical Data Section -->
+            <div class="historical-data-section">
+                <h2>Historical Data for {{ selected_ticker }}</h2>
+                {% if data[selected_ticker]["Historical Data"] is not none and data[selected_ticker]["Historical Data"].shape[0] > 0 %}
+                    <table>
+                        <thead>
+                            <tr>
+                                {% for column in data[selected_ticker]["Historical Data"].columns %}
+                                    <th>{{ column }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in data[selected_ticker]["Historical Data"].values[:5] %}
+                                <tr>
+                                    {% for value in row %}
+                                        <td>{{ value }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No historical data available for {{ selected_ticker }}.</p>
+                {% endif %}
+            </div>
+            
+
+            <!-- Financials Section -->
+            <!-- <div class="financials-section">
+                <h2>Financial Metrics for {{ selected_ticker }}</h2>
+                {% if data[selected_ticker]["Financials"] is not none and data[selected_ticker]["Financials"].shape[0] > 0 %}
+                    <table>
+                        <thead>
+                            <tr>
+                                {% for column in data[selected_ticker]["Financials"].columns %}
+                                    <th>{{ column }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for row in data[selected_ticker]["Financials"].values %}
+                                <tr>
+                                    {% for value in row %}
+                                        <td>{{ value }}</td>
+                                    {% endfor %}
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No financial metrics available for {{ selected_ticker }}.</p>
+                {% endif %}
+            </div> -->
+            
+            
+            <div class="eda-section">
+                <h2>Exploratory Data Analysis (EDA) for {{ selected_ticker }}</h2>
+                {% if "EDA" in data[selected_ticker] and data[selected_ticker]["EDA"] %}
+                    <table>
+                        <tr>
+                            <th>Statistic</th>
+                            {% for column in data[selected_ticker]["EDA"]["Mean"].keys() %}
+                                <th>{{ column }}</th>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Mean</td>
+                            {% for value in data[selected_ticker]["EDA"]["Mean"].values() %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Median</td>
+                            {% for value in data[selected_ticker]["EDA"]["Median"].values() %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Standard Deviation</td>
+                            {% for value in data[selected_ticker]["EDA"]["Standard Deviation"].values() %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Min</td>
+                            {% for value in data[selected_ticker]["EDA"]["Min"].values() %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                        <tr>
+                            <td>Max</td>
+                            {% for value in data[selected_ticker]["EDA"]["Max"].values() %}
+                                <td>{{ value }}</td>
+                            {% endfor %}
+                        </tr>
+                    </table>
+                {% else %}
+                    <p>No EDA available for {{ selected_ticker }}.</p>
+                {% endif %}
+            </div>            
+        {% else %}
+            <p>No data available for the selected ticker. Please refine your selection.</p>
+        {% endif %}
+    </div>
+</body>
+</html>
