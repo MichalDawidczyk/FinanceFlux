@@ -46,7 +46,13 @@
                             {% for key, value in data[selected_ticker]["Key Metrics"].items() %}
                                 <tr>
                                     <td>{{ key }}</td>
-                                    <td>{{ value }}</td>
+                                    <td>
+                                        {% if key == "Website" and value %}
+                                            <a href="{{ value }}" target="_blank">{{ value }}</a>
+                                        {% else %}
+                                            {{ value }}
+                                        {% endif %}
+                                    </td>
                                 </tr>
                             {% endfor %}
                         </tbody>
@@ -93,7 +99,14 @@
                     <p>No historical data available for {{ selected_ticker }}.</p>
                 {% endif %}
             </div>
-            
+            <div class="predictions-section">
+                <h2>Stock Predictions for {{ selected_ticker }}</h2>
+                {% if data[selected_ticker]["Predictions"] %}
+                    <p>Next projected closing price: <strong>${{ data[selected_ticker]["Predictions"] | round(2) }}</strong></p>
+                {% else %}
+                    <p>No prediction available.</p>
+                {% endif %}
+            </div>
 
             <!-- Financials Section -->
             <!-- <div class="financials-section">
@@ -167,7 +180,8 @@
                 {% else %}
                     <p>No EDA available for {{ selected_ticker }}.</p>
                 {% endif %}
-            </div>            
+            </div>   
+            
         {% else %}
             <p>No data available for the selected ticker. Please refine your selection.</p>
         {% endif %}

@@ -4,3 +4,7 @@ flask
 numpy
 matplotlib
 seaborn
+tensorflow
+sklearn
+tensorflow-intel
+ml-dtypes
