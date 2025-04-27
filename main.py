@@ -3,6 +3,7 @@ from import_data import ImportedData
 from clean_data import CleanedData
 from eda import EDA
 from generate_heatmap import HeatmapGenerator
+from predict_stock import StockPredictor
 
 app = Flask(__name__)
 
@@ -28,6 +29,9 @@ def home():
         if historical_data is not None and not historical_data.empty:
             raw_data[ticker]["Historical Data"] = cleaner.clean_historical_data(historical_data)
             raw_data[ticker]["EDA"] = eda.generate_summary_statistics(historical_data)
+            predictor = StockPredictor(historical_data)
+            predicted_price = predictor.predict_next_value()
+            raw_data[ticker]["Predictions"] = predicted_price
 
         if financials is not None and not financials.empty and financials.any(axis=None):
             raw_data[ticker]["Financials"] = cleaner.format_financials(financials)
