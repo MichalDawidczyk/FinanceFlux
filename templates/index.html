@@ -107,34 +107,14 @@
                     <p>No prediction available.</p>
                 {% endif %}
             </div>
-
-            <!-- Financials Section -->
-            <!-- <div class="financials-section">
-                <h2>Financial Metrics for {{ selected_ticker }}</h2>
-                {% if data[selected_ticker]["Financials"] is not none and data[selected_ticker]["Financials"].shape[0] > 0 %}
-                    <table>
-                        <thead>
-                            <tr>
-                                {% for column in data[selected_ticker]["Financials"].columns %}
-                                    <th>{{ column }}</th>
-                                {% endfor %}
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for row in data[selected_ticker]["Financials"].values %}
-                                <tr>
-                                    {% for value in row %}
-                                        <td>{{ value }}</td>
-                                    {% endfor %}
-                                </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table>
+            <div class="predictions-section_xgb">
+                <h2>Stock XGBoost Predictions for {{ selected_ticker }}</h2>
+                {% if data[selected_ticker]["XGBoost Prediction"] %}
+                    <p>Next projected closing price: <strong>${{ data[selected_ticker]["XGBoost Prediction"] | round(2) }}</strong></p>
                 {% else %}
-                    <p>No financial metrics available for {{ selected_ticker }}.</p>
+                    <p>No prediction available.</p>
                 {% endif %}
-            </div> -->
-            
+            </div>          
             
             <div class="eda-section">
                 <h2>Exploratory Data Analysis (EDA) for {{ selected_ticker }}</h2>
