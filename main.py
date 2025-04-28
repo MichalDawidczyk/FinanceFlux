@@ -4,6 +4,7 @@ from clean_data import CleanedData
 from eda import EDA
 from generate_heatmap import HeatmapGenerator
 from predict_stock import StockPredictor
+from predict_stock_xgbregression import XGBRegressorStockPredictor
 
 app = Flask(__name__)
 
@@ -29,17 +30,18 @@ def home():
         if historical_data is not None and not historical_data.empty:
             raw_data[ticker]["Historical Data"] = cleaner.clean_historical_data(historical_data)
             raw_data[ticker]["EDA"] = eda.generate_summary_statistics(historical_data)
+
             predictor = StockPredictor(historical_data)
             predicted_price = predictor.predict_next_value()
             raw_data[ticker]["Predictions"] = predicted_price
 
+            predictor_xgb = XGBRegressorStockPredictor(historical_data)
+            predicted_price_xgb = predictor_xgb.predict_next_value()
+            raw_data[ticker]["XGBoost Prediction"] = predicted_price_xgb
+
         if financials is not None and not financials.empty and financials.any(axis=None):
             raw_data[ticker]["Financials"] = cleaner.format_financials(financials)
-            # if metrics:  # Filter financials by selected metrics
-            #     financials = financials[metrics]
-            # key_metrics = eda.generate_summary_statistics(historical_data)  # Generate Key Metrics table
-            # raw_data[ticker]["Key Metrics"] = key_metrics
-            # Generate heatmap 
+
             heatmap_path = HeatmapGenerator.create_heatmap(financials, ticker)
             if heatmap_path:
                 content["Heatmap"] = f"heatmaps/{ticker}_heatmap.png"

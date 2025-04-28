@@ -8,3 +8,4 @@ tensorflow
 sklearn
 tensorflow-intel
 ml-dtypes
+xgboost
