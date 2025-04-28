@@ -114,7 +114,14 @@
                 {% else %}
                     <p>No prediction available.</p>
                 {% endif %}
-            </div>          
+            </div>        
+
+            <div class="sentiment-section">
+                <h2>Sentiment Analysis Based on Stock Predictions</h2>
+                <p>Price Change (%): <strong>{{ data[selected_ticker]["Sentiment Analysis"]["Price Change (%)"] }}</strong></p>
+                <p>Market Trend Conclusion: <strong>{{ data[selected_ticker]["Sentiment Analysis"]["Sentiment Conclusion"] }}</strong></p>
+            </div>
+            
             
             <div class="eda-section">
                 <h2>Exploratory Data Analysis (EDA) for {{ selected_ticker }}</h2>
