@@ -118,7 +118,9 @@
 
             <div class="sentiment-section">
                 <h2>Sentiment Analysis Based on Stock Predictions</h2>
-                <p>Price Change (%): <strong>{{ data[selected_ticker]["Sentiment Analysis"]["Price Change (%)"] }}</strong></p>
+                <p>Price Change LSTM (%): <strong>{{ data[selected_ticker]["Sentiment Analysis"]["Price Change LSTM (%)"] }}</strong></p>
+                <p>Price Change XGBoost (%): <strong>{{ data[selected_ticker]["Sentiment Analysis"]["Price Change XGBoost (%)"] }}</strong></p>
+                <p>Average Change (%): <strong>{{ data[selected_ticker]["Sentiment Analysis"]["Average Change (%)"] }}</strong></p>
                 <p>Market Trend Conclusion: <strong>{{ data[selected_ticker]["Sentiment Analysis"]["Sentiment Conclusion"] }}</strong></p>
             </div>
             

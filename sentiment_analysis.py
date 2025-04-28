@@ -11,9 +11,9 @@ class SentimentFromPredictions:
         xgb_change = ((self.predicted_price_xgb - self.historical_price) / self.historical_price) * 100
 
         price_change = (lstm_change + xgb_change) / 2
-        if price_change > 5:
+        if price_change > 2:
             sentiment = "Positive Outlook 📈 – Strong upward trend expected."
-        elif price_change < -5:
+        elif price_change < -2:
             sentiment = "Negative Outlook 📉 – Potential bearish movement."
         else:
             sentiment = "Neutral Outlook 🔄 – Stable conditions, minimal change."
